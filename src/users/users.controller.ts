@@ -1,25 +1,47 @@
 import { UsersService } from './users.service';
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './users.model';
 
+import { Roles } from 'src/auth/roles-auth.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { AddRoleDto } from './dto/add-role.dto';
+
 @ApiTags('Пользователи')
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private UsersService: UsersService) {}
 
-  @ApiOperation({ summary: 'Создание пользователя' })
+  // @ApiOperation({ summary: 'Создание пользователя' })
+  // @ApiResponse({ status: 200, type: User })
+  // @Post('/addUser')
+  // create(@Body() userDto: CreateUserDto) {
+  //   return this.UsersService.createUser(userDto);
+  // }
+
+  @ApiOperation({ summary: 'Получить пользователя по id' })
   @ApiResponse({ status: 200, type: User })
-  @Post()
-  create(@Body() userDto: CreateUserDto) {
-    return this.UsersService.createUser(userDto);
+  @Get(':id')
+  getOne(@Param('id') id: number) {
+    return this.UsersService.getUserById(id);
   }
 
-  @ApiOperation({ summary: 'Получение всех пользователей' })
+  @ApiOperation({ summary: 'Получить всех пользователей (ADMIN)' })
   @ApiResponse({ status: 200, type: [User] })
-  @Get()
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Get('/getUsersList')
   getAll() {
     return this.UsersService.getAllUsers();
+  }
+
+  @ApiOperation({ summary: 'Выдать роль пользователю (ADMIN)' })
+  @ApiResponse({ status: 200 })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Post('/setUserRole')
+  addRole(@Body() dto: AddRoleDto) {
+    return this.UsersService.addRole(dto);
   }
 }
