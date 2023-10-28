@@ -13,14 +13,7 @@ import { AddRoleDto } from './dto/add-role.dto';
 export class UsersController {
   constructor(private UsersService: UsersService) {}
 
-  // @ApiOperation({ summary: 'Создание пользователя' })
-  // @ApiResponse({ status: 200, type: User })
-  // @Post('/addUser')
-  // create(@Body() userDto: CreateUserDto) {
-  //   return this.UsersService.createUser(userDto);
-  // }
-
-  @ApiOperation({ summary: 'Получить пользователя по id' })
+  @ApiOperation({ summary: 'Получить пользователя по id (для профиля)' })
   @ApiResponse({ status: 200, type: User })
   @Get(':id')
   getOne(@Param('id') id: number) {

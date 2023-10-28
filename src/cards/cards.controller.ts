@@ -39,6 +39,7 @@ export class CardsController {
     return this.CardsService.getCardsByUserId(userId);
   }
 
+  @ApiOperation({ summary: 'Удалить карту' })
   @Delete('/deleteCard/:cardId')
   remove(@Param('cardId') cardId: number) {
     return this.CardsService.deleteCard(cardId);

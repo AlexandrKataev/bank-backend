@@ -1,7 +1,23 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Body, Param, Get, Post } from '@nestjs/common';
+
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreatePaymentSystemDto } from './dto/create-payment-system.dto';
 import { PaymentSystemsService } from './payment-systems.service';
 
-@Controller('payment-systems')
+@ApiTags('Платёжные системы')
+@Controller('paymentSystem')
 export class PaymentSystemsController {
-  constructor(private PaymentSystemsService: PaymentSystemsService) {}
+  constructor(private paymentSystemsService: PaymentSystemsService) {}
+
+  @ApiOperation({ summary: 'Создать платёжную систему (ADMIN)' })
+  @Post('/addPaymentSystem')
+  create(@Body() dto: CreatePaymentSystemDto) {
+    return this.paymentSystemsService.createPaymentSystem(dto);
+  }
+
+  @ApiOperation({ summary: 'Получить платёжную систему (ADMIN)' })
+  @Get('/:value')
+  getByValue(@Param('value') value: string) {
+    return this.paymentSystemsService.getPaymentSystemByValue(value);
+  }
 }
