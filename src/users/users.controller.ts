@@ -1,12 +1,13 @@
 import { UsersService } from './users.service';
-import { Body, Controller, Post, Get, Param, UseGuards } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { Body, Controller, Post, Get, Param, UseGuards, Delete } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './users.model';
 
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { AddRoleDto } from './dto/add-role.dto';
+import { UserVerifyGuard } from 'src/auth/user-verify.guard';
+import { AccessTokenGuard } from 'src/common/guards/access-token.guard';
 
 @ApiTags('Пользователи')
 @Controller('user')
@@ -15,7 +16,9 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Получить пользователя по id (для профиля)' })
   @ApiResponse({ status: 200, type: User })
-  @Get(':id')
+  @UseGuards(AccessTokenGuard)
+  @UseGuards(UserVerifyGuard)
+  @Get('/getUser/:id')
   getOne(@Param('id') id: number) {
     return this.UsersService.getUserById(id);
   }
@@ -26,7 +29,15 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Get('/getUsersList')
   getAll() {
-    return this.UsersService.getAllUsers();
+    return this.UsersService.getUsersList();
+  }
+
+  @ApiOperation({ summary: 'Удалить пользователя' })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Delete('/deleteUser/:id')
+  remove(@Param('id') id: number) {
+    return this.UsersService.deleteUser(id);
   }
 
   @ApiOperation({ summary: 'Выдать роль пользователю (ADMIN)' })

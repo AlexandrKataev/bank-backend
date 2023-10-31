@@ -13,7 +13,7 @@ interface UserCreationAttrs {
 
 @Table({ tableName: 'users' })
 export class User extends Model<User, UserCreationAttrs> {
-  @ApiProperty({ description: 'Идентификатор', example: '1' })
+  @ApiProperty({ description: 'Идентификатор', example: 1 })
   @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
   id: number;
 
@@ -32,6 +32,10 @@ export class User extends Model<User, UserCreationAttrs> {
   @ApiProperty({ description: 'Пароль', example: 'qweqwe123' })
   @Column({ type: DataType.STRING })
   password: string;
+
+  @ApiProperty({ description: 'Refresh-токен', example: 'qweqwe123' })
+  @Column({ type: DataType.STRING })
+  refreshToken: string;
 
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[];

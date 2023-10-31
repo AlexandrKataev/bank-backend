@@ -36,4 +36,14 @@ export class CardsService {
       return 'Не удалось удалить карту';
     }
   }
+
+  async deleteUserCards(userId: number) {
+    try {
+      await this.cardsRepository.destroy({ where: { userId } });
+      return `Карты пользователя ${userId} удалена`;
+    } catch (e) {
+      console.log(e);
+      return 'Не удалось удалить карту';
+    }
+  }
 }

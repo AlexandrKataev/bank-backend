@@ -14,12 +14,13 @@ import { Card } from './cards/cards.model';
 import { ContactsModule } from './contacts/contacts.module';
 import { Contact } from './contacts/contacts.model';
 import { TransactionsModule } from './transactions/transactions.module';
+import { PaymentSystem } from './payment-systems/payment-systems.model';
 
 @Module({
   controllers: [],
   providers: [],
   imports: [
-    ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
+    ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -27,7 +28,7 @@ import { TransactionsModule } from './transactions/transactions.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Role, UserRoles, Card, Contact],
+      models: [User, Role, UserRoles, Card, Contact, PaymentSystem],
       autoLoadModels: true,
     }),
     UsersModule,

@@ -15,7 +15,7 @@ export class TransactionsController {
     return this.transactionsService.createTransaction(transactionDto);
   }
 
-  @ApiOperation({ summary: 'Получить транзакции по карте' })
+  @ApiOperation({ summary: 'Получить транзакции по карте через cardId' })
   @Get('/:cardId')
   getByValue(@Param('cardId') cardId: number) {
     return this.transactionsService.getTransactionsByCardId(cardId);

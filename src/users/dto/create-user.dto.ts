@@ -17,4 +17,7 @@ export class CreateUserDto {
   @ApiProperty({ description: 'Пароль', example: 'qweqwe123' })
   @Length(4, 16, { message: 'Пароль должен содержать от 4 до 16 символов' })
   readonly password: string;
+
+  @ApiProperty({ description: 'Refresh-токен', example: 'qweqwewqqewqw' })
+  refreshToken?: string;
 }

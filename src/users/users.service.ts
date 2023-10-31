@@ -1,15 +1,18 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
 import { User } from './users.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesService } from 'src/roles/roles.service';
 import { AddRoleDto } from './dto/add-role.dto';
+import { CardsService } from 'src/cards/cards.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private roleService: RolesService,
+    private cardService: CardsService,
   ) {}
 
   async createUser(dto: CreateUserDto) {
@@ -20,7 +23,7 @@ export class UsersService {
     return user;
   }
 
-  async getAllUsers() {
+  async getUsersList() {
     const users = await this.userRepository.findAll({ include: { all: true } });
     return users;
   }
@@ -33,6 +36,24 @@ export class UsersService {
   async getUserByEmail(email: string) {
     const user = await this.userRepository.findOne({ where: { email }, include: { all: true } });
     return user;
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserDto) {
+    const user = this.userRepository.update(updateUserDto, { where: { id } });
+    return user;
+  }
+
+  async deleteUser(id: number) {
+    try {
+      const user = await this.userRepository.findByPk(id);
+      await this.cardService.deleteUserCards(id);
+      if (!user) throw new BadRequestException('Не удалось удалить пользователя');
+      await this.userRepository.destroy({ where: { id } });
+      return `Пользователь ${id} удалён`;
+    } catch (e) {
+      console.log(e);
+      return 'Не удалось удалить пользователя';
+    }
   }
 
   async addRole(dto: AddRoleDto) {
