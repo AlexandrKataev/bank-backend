@@ -4,7 +4,7 @@ import { RolesService } from './roles.service';
 import { Controller, Body, Post, Get, Param } from '@nestjs/common';
 
 @ApiTags('Роли пользователя')
-@Controller('role')
+@Controller('roles')
 export class RolesController {
   constructor(private RolesService: RolesService) {}
 
@@ -15,8 +15,14 @@ export class RolesController {
   }
 
   @ApiOperation({ summary: 'Получить роль (ADMIN)' })
-  @Get('/:value')
+  @Get('/getRole/:value')
   getByValue(@Param('value') value: string) {
     return this.RolesService.getRoleByValue(value);
+  }
+
+  @ApiOperation({ summary: 'Получить список ролей (ADMIN)' })
+  @Get('/getRolesList')
+  getAll() {
+    return this.RolesService.getRolesList();
   }
 }

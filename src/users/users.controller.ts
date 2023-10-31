@@ -10,7 +10,7 @@ import { UserVerifyGuard } from 'src/auth/user-verify.guard';
 import { AccessTokenGuard } from 'src/common/guards/access-token.guard';
 
 @ApiTags('Пользователи')
-@Controller('user')
+@Controller('users')
 export class UsersController {
   constructor(private UsersService: UsersService) {}
 
@@ -22,6 +22,14 @@ export class UsersController {
     return this.UsersService.getUserById(id);
   }
 
+  @ApiOperation({ summary: 'Удалить пользователя' })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Delete('/deleteUser/:id')
+  remove(@Param('id') id: number) {
+    return this.UsersService.deleteUser(id);
+  }
+
   @ApiOperation({ summary: 'Получить всех пользователей (ADMIN)' })
   @ApiResponse({ status: 200, type: [User] })
   @Roles('ADMIN')
@@ -29,14 +37,6 @@ export class UsersController {
   @Get('/getUsersList')
   getAll() {
     return this.UsersService.getUsersList();
-  }
-
-  @ApiOperation({ summary: 'Удалить пользователя' })
-  @Roles('ADMIN')
-  @UseGuards(RolesGuard)
-  @Delete('/deleteUser/:id')
-  remove(@Param('id') id: number) {
-    return this.UsersService.deleteUser(id);
   }
 
   @ApiOperation({ summary: 'Выдать роль пользователю (ADMIN)' })

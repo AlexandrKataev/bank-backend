@@ -5,7 +5,7 @@ import { CreateContactDto } from './dto/create-contact.dto';
 import { Contact } from './contacts.model';
 
 @ApiTags('Контакты')
-@Controller('contact')
+@Controller('contacts')
 export class ContactsController {
   constructor(private ContactsService: ContactsService) {}
 

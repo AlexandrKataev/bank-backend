@@ -7,7 +7,7 @@ import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 
 @ApiTags('Карты')
-@Controller('card')
+@Controller('cards')
 export class CardsController {
   constructor(private CardsService: CardsService) {}
 
@@ -18,15 +18,6 @@ export class CardsController {
     return this.CardsService.createCard(cardDto);
   }
 
-  @ApiOperation({ summary: 'Получить все карты (ADMIN)' })
-  @ApiResponse({ status: 200, type: [Card] })
-  @Roles('ADMIN')
-  @UseGuards(RolesGuard)
-  @Get('/getAllCardList')
-  getAll() {
-    return this.CardsService.getAllCards();
-  }
-
   @ApiOperation({ summary: 'Получить карту по id' })
   @Get('/getCard/:cardId')
   getByValue(@Param('cardId') cardId: number) {
@@ -34,7 +25,7 @@ export class CardsController {
   }
 
   @ApiOperation({ summary: 'Получить карты пользователя по userId' })
-  @Get('/getUserCardList/:userId')
+  @Get('/getUserCardsList/:userId')
   getByUserId(@Param('userId') userId: number) {
     return this.CardsService.getCardsByUserId(userId);
   }
@@ -43,5 +34,14 @@ export class CardsController {
   @Delete('/deleteCard/:cardId')
   remove(@Param('cardId') cardId: number) {
     return this.CardsService.deleteCard(cardId);
+  }
+
+  @ApiOperation({ summary: 'Получить все карты (ADMIN)' })
+  @ApiResponse({ status: 200, type: [Card] })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Get('/getAllCardsList')
+  getAll() {
+    return this.CardsService.getAllCards();
   }
 }

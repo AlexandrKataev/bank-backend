@@ -16,4 +16,9 @@ export class PaymentSystemsService {
     const paymentSystem = await this.paymentSystemsRepository.findOne({ where: { value } });
     return paymentSystem;
   }
+
+  async getPaymentSystemsList() {
+    const paymentSystem = await this.paymentSystemsRepository.findAll({ include: { all: true } });
+    return paymentSystem;
+  }
 }

@@ -5,7 +5,7 @@ import { CreatePaymentSystemDto } from './dto/create-payment-system.dto';
 import { PaymentSystemsService } from './payment-systems.service';
 
 @ApiTags('Платёжные системы')
-@Controller('paymentSystem')
+@Controller('paymentSystems')
 export class PaymentSystemsController {
   constructor(private paymentSystemsService: PaymentSystemsService) {}
 
@@ -16,8 +16,14 @@ export class PaymentSystemsController {
   }
 
   @ApiOperation({ summary: 'Получить платёжную систему (ADMIN)' })
-  @Get('/:value')
+  @Get('/getPaymentSystem/:value')
   getByValue(@Param('value') value: string) {
     return this.paymentSystemsService.getPaymentSystemByValue(value);
+  }
+
+  @ApiOperation({ summary: 'Получить список платёжных систем (ADMIN)' })
+  @Get('/getPaymentSystemsList')
+  getAll() {
+    return this.paymentSystemsService.getPaymentSystemsList();
   }
 }
