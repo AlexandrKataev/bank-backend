@@ -27,7 +27,9 @@ export class UserVerifyGuard implements CanActivate {
       const token = authHeader.split(' ')[1];
       const decodedJwtAccessToken = this.jwtService.decode(token) as any;
 
-      if (bearer !== 'Bearer' || decodedJwtAccessToken.id + '' !== req.params.id + '') {
+      console.log(decodedJwtAccessToken);
+
+      if (bearer !== 'Bearer' || decodedJwtAccessToken.sub + '' !== req.params.id + '') {
         throw new UnauthorizedException({ message: 'Нет права доступа' });
       }
 

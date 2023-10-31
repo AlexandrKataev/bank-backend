@@ -13,7 +13,7 @@ interface ContactCreationAttrs {
 @Table({ tableName: 'contacts' })
 export class Contact extends Model<Contact, ContactCreationAttrs> {
   @ApiProperty({ description: 'id контакта', example: 1 })
-  @Column({ type: DataType.INTEGER, unique: true, primaryKey: true })
+  @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
   id: number;
 
   @ApiProperty({ description: 'id владельца', example: 123 })

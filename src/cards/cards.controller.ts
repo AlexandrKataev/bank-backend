@@ -28,7 +28,7 @@ export class CardsController {
   }
 
   @ApiOperation({ summary: 'Получить карту по id' })
-  @Get('/:cardId')
+  @Get('/getCard/:cardId')
   getByValue(@Param('cardId') cardId: number) {
     return this.CardsService.getCardById(cardId);
   }

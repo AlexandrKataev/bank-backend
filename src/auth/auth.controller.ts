@@ -39,15 +39,15 @@ export class AuthController {
   }
 
   // старые эндпоинты
-  @ApiOperation({ summary: 'Вход' })
-  @Post('/login')
-  login(@Body() userDto: LoginUserDto) {
-    return this.authService.login(userDto);
-  }
+  // @ApiOperation({ summary: 'Вход' })
+  // @Post('/login')
+  // login(@Body() userDto: LoginUserDto) {
+  //   return this.authService.login(userDto);
+  // }
 
-  @ApiOperation({ summary: 'Регистрация' })
-  @Post('/registration')
-  registration(@Body() userDto: CreateUserDto) {
-    return this.authService.registration(userDto);
-  }
+  // @ApiOperation({ summary: 'Регистрация' })
+  // @Post('/registration')
+  // registration(@Body() userDto: CreateUserDto) {
+  //   return this.authService.registration(userDto);
+  // }
 }

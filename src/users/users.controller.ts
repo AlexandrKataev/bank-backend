@@ -16,8 +16,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Получить пользователя по id (для профиля)' })
   @ApiResponse({ status: 200, type: User })
-  @UseGuards(AccessTokenGuard)
-  @UseGuards(UserVerifyGuard)
+  @UseGuards(AccessTokenGuard, UserVerifyGuard)
   @Get('/getUser/:id')
   getOne(@Param('id') id: number) {
     return this.UsersService.getUserById(id);
@@ -26,7 +25,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Получить всех пользователей (ADMIN)' })
   @ApiResponse({ status: 200, type: [User] })
   @Roles('ADMIN')
-  @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard, AccessTokenGuard)
   @Get('/getUsersList')
   getAll() {
     return this.UsersService.getUsersList();
